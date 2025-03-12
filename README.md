@@ -42,6 +42,6 @@ npm install
 ng serve --port=4600
 ```
 
-## 💬 Realizado por:
+## 💬 Autores
 - Dilan Esteban Rey Sepulveda - 2190397
 - Silvia Alejandra Cárdenas Santos - 2210102
