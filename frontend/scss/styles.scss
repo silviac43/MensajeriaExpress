@@ -1,0 +1,76 @@
+// Importo las funciones de Bootstrap (requerido antes de variables)
+@import "../node_modules/bootstrap/scss/functions";
+
+// Importo las variables de Bootstrap
+@import "../node_modules/bootstrap/scss/variables";
+
+// Sobrescribo las variables que quiero cambiar
+$light: $gray-200;
+
+// Agrego nuevos colores
+$custom-colors: (
+  "softdark": #0d1321, 
+  "softdarkblue": #1d2d44,
+  "softblue": #3e5c76,
+  "softgrayblue": #748cab,
+  "softlight": #f0ebd8
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+
+
+
+// Importo Bootstrap completo (ahora usará mis variables personalizadas)
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+
+
+// edito el .form-control
+.form-control {
+    transition: border-color 0.2s ease-in-out;
+  
+    &:focus {
+      border-color: map-get($theme-colors, "softgrayblue"); // Color del borde cuando se hace clic
+      box-shadow: 0 0 5px lighten(map-get($theme-colors, "softdarkblue"), 5%);
+    }
+}
+
+
+// creo un tipo de boton
+.btn-primaryplus {
+    background-color: map-get($theme-colors, "softdarkblue"); 
+    color: white; // Texto blanco
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: all 0.2s ease-in-out; // Transición suave
+  
+    &:hover {
+      background-color: lighten(map-get($theme-colors, "softdarkblue"), 10%); 
+      color: white;
+    }
+}
+
+.btn-secondaryplus {
+  background-color: transparent; 
+  color:map-get($theme-colors, "softdark"); 
+  border: 1px solid map-get($theme-colors, "softdarkblue");
+  box-shadow: 0px 0px 1px map-get($theme-colors, "softdarkblue");
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: all 0.2s ease-in-out; // Transición suave
+
+  &:hover {
+    background-color: lighten(map-get($theme-colors, "softdarkblue"), 10%); 
+    color: white;
+  }
+}
+
+// editando link
+.link-custom {
+    color: map-get($theme-colors, "softblue");
+    &:hover {
+        color: darken(map-get($theme-colors, "softblue"), 10%);
+    }
+}
