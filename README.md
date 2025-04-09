@@ -4,14 +4,12 @@
 Este proyecto es una plataforma digital diseñada para optimizar la gestión de pedidos y entregas en empresas de mensajería express. Permite a las empresas asignar pedidos a mensajeros, realizar seguimiento en tiempo real y mejorar la organización de sus operaciones. 
 
 ## 🚀 Características Principales
-- **Registro y autenticación de usuarios** (administradores y mensajeros)
-- **Gestión de empresas de mensajería**
-- **Registro y administración de clientes**
-- **Creación y asignación de pedidos** a mensajeros
-- **Seguimiento de pedidos** en tiempo real
-- **Historial y reportes de pedidos**
-- **Panel de información de clientes frecuentes**
+- Registro y autenticación de usuarios
+- Registro y administración de clientes
+- Creación y administración de pedidos
 
+## 🛢️ Base de datos
+  
 
 ## ⚙️ Instalación y Configuración
 ### 1️⃣ Clonar el Repositorio
@@ -22,7 +20,7 @@ cd mensajeria-express
 ### 2️⃣ Configurar el Backend
 1. Instalar dependencias:
 ```bash
-cd backend
+cd tallerjwt
 mvn clean install
 ```
 2. Configurar la base de datos en `application.properties`.
