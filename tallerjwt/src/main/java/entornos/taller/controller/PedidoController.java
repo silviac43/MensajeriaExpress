@@ -2,6 +2,7 @@ package entornos.taller.controller;
 
 import entornos.taller.model.Pedido;
 import entornos.taller.service.PedidoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/pedidos")
+@SecurityRequirement(name = "bearerAuth")
 public class PedidoController {
 
     @Autowired
