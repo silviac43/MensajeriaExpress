@@ -1,5 +1,6 @@
 package entornos.taller.controller;
 
+import entornos.taller.dto.LoginRequest;
 import entornos.taller.model.Usuario;
 import entornos.taller.security.JwtUtil;
 import entornos.taller.service.AuthService;
@@ -30,9 +31,9 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody Map<String, String> credentials) {
-        String nombreUsuario = credentials.get("nombreUsuario");
-        String password = credentials.get("password");
+    public Map<String, String> login(@RequestBody LoginRequest loginRequest) {
+        String nombreUsuario = loginRequest.getNombreUsuario();
+        String password = loginRequest.getPassword();
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(nombreUsuario, password));
 
