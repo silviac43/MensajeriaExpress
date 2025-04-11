@@ -77,8 +77,6 @@ export default class ClienteService{
         
             if (response.ok) {
                 alert('Cliente registrado con éxito!');
-                // document.getElementById('clientForm').reset();
-                // document.getElementById('clientForm').style.display = 'none';
                 return response;
             } else {
                 throw new Error('Error en el registro');
@@ -86,6 +84,31 @@ export default class ClienteService{
         } catch (error) {
             console.error('Error:', error);
             alert('Hubo un error al registrar el cliente');
+        }
+    }
+
+    async updateCliente(data, id) {
+        const token = localStorage.getItem("user");
+        try {
+            const response = await fetch(`http://localhost:8080/api/clientes/${id}`, {
+                method: 'PUT',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(data)
+            });
+        
+            if (response.ok) {
+                alert('Cliente actualizado con éxito!');
+                return response;
+            } else {
+                throw new Error('Error en la actualizacion.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Hubo un error al actualizar el cliente');
         }
     }
 }

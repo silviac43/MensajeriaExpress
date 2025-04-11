@@ -8,18 +8,25 @@ export default class Cliente {
     #service = null;
     #createForm = null;
     #addButton = null;
+    #updateForm = null;
+    #buttonWrapper = null;
 
     constructor(htmlContent) {
         this.#element = document.createElement('div');
         this.#element.innerHTML = htmlContent;
         this.#table = new Tabla();
+        this.initializeCreateForm();
+        this.initializeUpdateForm();
+        this.initializeButton();
         this.#table.setAcciones([
             {
                 title: 'Editar',
                 classes: ['btn', 'btn-sm', 'btn-primary', 'action-btn'],
                 iconClasses: ['bi', 'bi-pencil-square'],
-                onClick: () => {
-                    console.log('Editar clicked');
+                onClick: (rowData) => {
+                    // console.log('onclik editar');
+                    
+                    this.renderUpdateForm(rowData);
                     
                 }
             },
@@ -38,7 +45,7 @@ export default class Cliente {
                 }
             }
         ])
-        this.initializeCreateForm();
+        
         this.#service = new ClienteService();
     }
 
@@ -64,24 +71,43 @@ export default class Cliente {
         this.#table.setTable();
         document.getElementById('content-section').appendChild(this.#table.getElement())
         document.getElementById('content-section').appendChild(this.#createForm.getElement())
-        this.addButton();
+        document.getElementById('content-section').appendChild(this.#updateForm.getElement())
+        document.getElementById('content-section').appendChild(this.#buttonWrapper)
+
+        // this.addButton();
         
     }
 
-    addButton () {
-        let wrapper = document.createElement('div');
-        wrapper.setAttribute('class','d-flex justify-content-end')
+    initializeButton() {
+        this.#buttonWrapper = document.createElement('div');
+        this.#buttonWrapper.setAttribute('class','d-flex justify-content-end');
         this.#addButton = document.createElement('button');
         this.#addButton.classList.add('btn','btn-secondaryplus', 'align-self-start', 'my-3');
         this.#addButton.setAttribute('id', 'add');
         this.#addButton.setAttribute('style', 'width: auto;');
         this.#addButton.innerText = 'Agregar nuevo';
         this.#addButton.onclick = () => this.renderCreateForm();
-        console.log(this.#element);
+        // console.log(this.#element);
         
-        let contentSection = document.getElementById('content-section');
-        wrapper.appendChild(this.#addButton)
-        contentSection.appendChild(wrapper)
+        // let contentSection = document.getElementById('content-section');
+        this.#buttonWrapper.appendChild(this.#addButton);
+        // contentSection.appendChild(wrapper)
+    }
+
+    addButton () {
+        // let wrapper = document.createElement('div');
+        // wrapper.setAttribute('class','d-flex justify-content-end')
+        // this.#addButton = document.createElement('button');
+        // this.#addButton.classList.add('btn','btn-secondaryplus', 'align-self-start', 'my-3');
+        // this.#addButton.setAttribute('id', 'add');
+        // this.#addButton.setAttribute('style', 'width: auto;');
+        // this.#addButton.innerText = 'Agregar nuevo';
+        // this.#addButton.onclick = () => this.renderCreateForm();
+        // // console.log(this.#element);
+        
+        // let contentSection = document.getElementById('content-section');
+        // wrapper.appendChild(this.#addButton)
+        // contentSection.appendChild(wrapper)
     }
 
     async initializeCreateForm() {
@@ -103,11 +129,62 @@ export default class Cliente {
                 this.#createForm.getElement().reset();
                 this.#createForm.getElement().style.display = 'none'
                 this.#addButton.innerText = 'Agregar nuevo';
+                this.updateTable();
             } else {
                 console.error('error al registrar cliente');
             }
             
         })
+    }
+
+    async initializeUpdateForm() {
+        let html = await this.getHtml('../updateClientForm.html');
+        this.#updateForm = new Form(html);
+        document.getElementById('content-section').appendChild(this.#updateForm.getElement());
+        this.#updateForm.getElement().style.display = 'none';
+        this.#updateForm.getElement().setAttribute('clientId',null);
+        this.#updateForm.on('submit', async (e) => {
+            // log
+            e.preventDefault();
+            let id = this.#updateForm.getElement().getAttribute('clientId');
+            
+            const formData = {
+                nombre: document.getElementById('uNombreInput').value,
+                telefono: document.getElementById('uTelefonoInput').value,
+                direccion: document.getElementById('uDireccionInput').value,
+                email: document.getElementById('uEmailInput').value
+            };
+
+            let response = await this.#service.updateCliente(formData, id);
+            if(response.ok) {
+                this.#updateForm.getElement().reset();
+                this.#updateForm.getElement().style.display = 'none'
+                this.updateTable();
+
+                // this.#addButton.innerText = 'Agregar nuevo';
+            } else {
+                console.error('error al actualizar el cliente');
+            }
+            
+        })
+    }
+
+    renderUpdateForm(rowData) {
+        
+        if (this.#updateForm.getElement().style.display == 'block') {
+            this.#updateForm.getElement().style.display = 'none'
+            // this.#addButton.innerText = 'Agregar nuevo';
+            this.#updateForm.getElement().setAttribute('clientId',null);
+        } else {
+            console.log('ID: ',rowData.id);
+            this.#updateForm.getElement().setAttribute('clientId',rowData.id)
+            document.getElementById('uNombreInput').value = rowData.Nombre;
+            document.getElementById('uTelefonoInput').value = rowData.Telefono;
+            document.getElementById('uDireccionInput').value = rowData['Dirección'];
+            document.getElementById('uEmailInput').value = rowData.Email;
+            this.#updateForm.getElement().style.display = 'block';    
+            
+        }
     }
 
     renderCreateForm() {
