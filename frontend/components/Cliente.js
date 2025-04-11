@@ -94,21 +94,21 @@ export default class Cliente {
         // contentSection.appendChild(wrapper)
     }
 
-    addButton () {
-        // let wrapper = document.createElement('div');
-        // wrapper.setAttribute('class','d-flex justify-content-end')
-        // this.#addButton = document.createElement('button');
-        // this.#addButton.classList.add('btn','btn-secondaryplus', 'align-self-start', 'my-3');
-        // this.#addButton.setAttribute('id', 'add');
-        // this.#addButton.setAttribute('style', 'width: auto;');
-        // this.#addButton.innerText = 'Agregar nuevo';
-        // this.#addButton.onclick = () => this.renderCreateForm();
-        // // console.log(this.#element);
+    // addButton () {
+    //     // let wrapper = document.createElement('div');
+    //     // wrapper.setAttribute('class','d-flex justify-content-end')
+    //     // this.#addButton = document.createElement('button');
+    //     // this.#addButton.classList.add('btn','btn-secondaryplus', 'align-self-start', 'my-3');
+    //     // this.#addButton.setAttribute('id', 'add');
+    //     // this.#addButton.setAttribute('style', 'width: auto;');
+    //     // this.#addButton.innerText = 'Agregar nuevo';
+    //     // this.#addButton.onclick = () => this.renderCreateForm();
+    //     // // console.log(this.#element);
         
-        // let contentSection = document.getElementById('content-section');
-        // wrapper.appendChild(this.#addButton)
-        // contentSection.appendChild(wrapper)
-    }
+    //     // let contentSection = document.getElementById('content-section');
+    //     // wrapper.appendChild(this.#addButton)
+    //     // contentSection.appendChild(wrapper)
+    // }
 
     async initializeCreateForm() {
         let html = await this.getHtml('../createClientForm.html');

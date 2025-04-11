@@ -5,12 +5,14 @@ export default class Pedido {
     #table = null;
     #element = null;
     #service = null;
-    #addButton = null;
+    #createForm = null;
+    // #addButton = null;
 
     constructor(htmlContent) {
         this.#element = document.createElement('div');
         this.#element.innerHTML = htmlContent;
         this.#table = new Tabla();
+        this.#createForm = 
         this.#table.setAcciones([
             {
                 title: 'Editar',
@@ -21,17 +23,6 @@ export default class Pedido {
                     
                 }
             },
-            // {
-            //     title: 'Ver más',
-            //     classes: ['btn', 'btn-sm', 'btn-info', 'action-btn'],
-            //     iconClasses: ['bi', 'bi-eye-fill'],
-            //     onClick: (rowData) => {
-            //         console.log(rowData);
-                    
-            //         window.alert('Notas adicionales del pedido ID ' + rowData.id + ':\n' + rowData.notas);
-                    
-            //     }
-            // },
             {
                 title: 'Eliminar',
                 classes: ['btn', 'btn-sm', 'btn-danger', 'action-btn'],
@@ -47,29 +38,10 @@ export default class Pedido {
                 }
             }
         ]);
-        
-        
-        
-        // console.log(this.#addButton);
-        
-        
-        // this.#element.appendChild(this.#addButton)
         this.#service = new PedidoService();
     }
 
-    // addButton( ) {
-    //     this.#addButton = document.createElement('button');
-    //     this.#addButton.classList.add('btn','btn-secondaryplus', 'align-self-end', 'my-3');
-    //     this.#addButton.setAttribute('id', 'add');
-    //     this.#addButton.setAttribute('style', 'width: auto;');
-    //     this.#addButton.innerText = 'Agregar nuevo';
-    //     this.#addButton.onclick = () => console.log('clicked');
-    //     console.log(this.#element);
-        
-    //     // let contentSection = document.getElementById('content-section');
-    //     // contentSection.insertBefore(addButton, contentSection);
-    //     // console.log(this.#element);
-    // }
+    
 
     async deletePedido(rowData) {
         let response = await this.#service.deletePedido(rowData.id);
