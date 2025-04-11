@@ -18,8 +18,6 @@ export default class App {
     }
 
     async init() {
-        
-
         // Inicializa servicios
         this.initServices();
 

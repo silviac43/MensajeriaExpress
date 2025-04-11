@@ -34,7 +34,8 @@ export default class Tabla {
             let th = new TablaData(header, 'th');
             row.appendChild(th.getElement())
         });
-        // console.log('setHeader', this.#header);
+        let acciones = new TablaData('Acciones', 'th');
+        row.appendChild(acciones.getElement())
         
         this.#header.appendChild(row);
         this.#element.appendChild(this.#header);
@@ -43,10 +44,16 @@ export default class Tabla {
     setBody() {
         this.#data.content.forEach(rowContent => {
             console.log(Object.values(rowContent));
+            console.log(Object.entries(rowContent));
             
             let row = document.createElement('tr');
-            Object.values(rowContent).forEach(el => {
-                let td = new TablaData(el,'td');
+            Object.entries(rowContent).forEach(entry => {
+                let td = null;
+                if(entry[0] == 'Estado') {
+                    td = new TablaData(`<span class="badge bg-warning">${entry[1]}</span>`,'td')
+                } else {
+                    td = new TablaData(entry[1],'td');
+                }
                 row.appendChild(td.getElement());
             })
             this.#body.appendChild(row);
