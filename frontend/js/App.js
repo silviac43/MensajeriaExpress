@@ -1,12 +1,13 @@
 import AuthService from "./AuthService.js";
+import PedidoService from "./PedidoService.js";
 import Router from "./Router.js";
 import Form from "../components/Form.js";
 import NavBar from "../components/NavBar.js";
-import Pedidos from "../components/Pedidos.js";
+import Pedidos from "../components/Pedido.js";
 
 export default class App {
     #router = null;
-    #authService = null;
+    #pedidoService = null;
 
     constructor(config) {
         this.config = config;
@@ -56,11 +57,29 @@ export default class App {
         this.formLogin = await this.createLoginForm();
         this.formRegister = await this.createRegisterForm();
         this.loginNavBar = await this.createNavBar('loginNav.html');
-        this.logedNavBar = await this.createNavBar('loggedNavBar.html');
+        this.logedNavBar = await this.createLogedNavBar();
         this.pedidosSection = await this.createPedidosSection();    
     }
 
+    async createLogedNavBar() {
+        let logedNav = await this.createNavBar('loggedNavBar.html');
+        let logOutItem = document.createElement('li');
+        let logOutLink = document.createElement('a');
+        logOutItem.classList.add('nav-item');
+        logOutLink.classList.add('nav-link','mx-4');
+        logOutLink.onclick = this.logOut;
+        logOutLink.innerText = 'Log out';
+        logOutLink.setAttribute('id','log-out')
+        logOutLink.setAttribute('active', 'true'); 
+        logOutItem.appendChild(logOutLink)
+        logedNav.getElement().childNodes[2].appendChild(logOutItem);
+        return logedNav
+    }
 
+    logOut() {
+        AuthService.logout();
+        
+    }
     async initializeAuth() {
         try {
             await this.updateAuthState();
@@ -70,19 +89,25 @@ export default class App {
     }
 
     async updateAuthState() {
+        
+        
         this.state.isAuthenticated = AuthService.isAuthenticated();
         this.state.user = AuthService.getToken();
+        // if(this.state.isAuthenticated && this.state.user && window.location.pathname == '/login') {
+        //     history.replaceState(null,null,'/pedidos')
+        // }
+        console.log('updateAuthState', this.state.isAuthenticated, this.state.user);
         await this.renderComponents();
     }
 
     async renderComponents() {
         try {
             if (this.state.isAuthenticated && this.state.user) {
+                
                 this.renderNav(this.logedNavBar.getElement())
                 this.renderAuthenticatedContent()
             } else {
                 this.renderNav(this.loginNavBar.getElement())
-                this.renderContent(this.formLogin.getElement(),'/login')
                 this.renderUnauthenticatedContent();
             }
         } catch (error) {
@@ -91,11 +116,23 @@ export default class App {
     }
 
     renderAuthenticatedContent() {
+        // console.log('authenticated section');
         const currentPath = window.location.pathname;
-        if(currentPath === '/pedidos') {
+
+        // console.log(currentPath);
+        if (currentPath == '/clientes'){
+            this.renderContent(this.pedidosSection.getElement(), '/clientes')
+        } else {
+            this.pedidosSection.updateTable();
             this.renderContent(this.pedidosSection.getElement(), '/pedidos')
-            this.pedidosSection.render();
         }
+        
+        // if(currentPath === '/pedidos') {
+        //     this.pedidosSection.updateTable();
+        //     this.renderContent(this.pedidosSection.getElement(), '/pedidos')
+        // } else if (currentPath == '/clientes'){
+        //     this.renderContent(this.pedidosSection.getElement(), '/pedidos')
+        // }
     }
 
     renderUnauthenticatedContent() {
@@ -119,7 +156,7 @@ export default class App {
 
     async getHtml(route) {
         try {
-            console.log("getHtml route -> " + route);
+            // console.log("getHtml route -> " + route);
             const response = await fetch(route);
             if (!response.ok) throw new Error(`Failed to fetch ${route}`);
             const html = await response.text();
@@ -145,16 +182,6 @@ export default class App {
         }
     }
 
-    // handleClicks() {
-    //     document.body.addEventListener("click", (e) => {
-    //         if (e.target.matches("[data-link]")) {
-    //             e.preventDefault();
-    //             const path = new URL(e.target.href).pathname;
-    //             this.#router.navigateTo(path);
-    //         }
-    //     });
-    // }
-
     async handleAuth({user, pass}) {
         return await AuthService.login(user, pass);      
     }
@@ -169,11 +196,12 @@ export default class App {
         this.state = {
             isAuthenticated,
             user
-        }
+        } 
+        
     }
 
     initServices() {
-        this.#authService = new AuthService();
+        this.#pedidoService = new PedidoService();
     }
 
     // Creo el register form
@@ -239,9 +267,9 @@ export default class App {
         return formLogin;
     }
 
-    async createPedidosSection() {
-        let html = await this.getHtml('Pedidos.html')
-        const pedidosSection = new Pedidos(html)
+    async createPedidosSection() {        
+        let html = await this.getHtml('Pedido.html')
+        const pedidosSection = new Pedidos(html)        
         return pedidosSection;
     }
 
@@ -250,8 +278,6 @@ export default class App {
         const nav = new NavBar(html);
         nav.handleClicks(this.#router)
         return nav;
-
-        
     }
 
     // Manejador de rutas
@@ -261,16 +287,7 @@ export default class App {
             this.renderComponents();
         });
     
-        // // Example of programmatic navigation
-        // this.navigateToLogin = () => {
-        //     history.pushState(null, '', '/login');
-        //     this.renderComponents();
-        // };
-    
-        // this.navigateToRegister = () => {
-        //     history.pushState({}, '', '/register');
-        //     this.renderComponents();
-        // };
+
     }
 
 }

@@ -1,12 +1,32 @@
-<!-- Contenedor de botones CRUD -->
-<div class="d-flex align-items-center justify-content-center mb-3 gap-2" id="sub-nav">
-    <!-- <button class="btn btn-primary" >Listar</button>
-    <button class="btn btn-success" >Agregar</button>
-    <button class="btn btn-warning" >Editar</button>
-    <button class="btn btn-danger" >Eliminar</button> -->
-</div>
-<!-- Contenedor dinámico -->
-<div id="contenido-dinamico" class="mt-4">
-<!-- Aquí se renderiza según la opción -->
+<div class="d-flex align-items-center justify-content-center">
+    <div class="d-flex flex-column justify-content-start m-5 bg-white border rounded p-5 pt-4 shadow text-softdark vh-75" style="min-width: 60%;">
+        <h1 class="text-center text-uppercase">formulario de registro</h1>
+        <hr class="my-4">
+        <p id="formMessage" class="mb-3 text-center" style="display: none;"></p>
+        <form id="registerForm" class="p-3">
+            <div class="mb-3">
+                <label for="userInput" class="form-label">Usuario</label>
+                <input type="text" class="form-control" id="userInput" required aria-describedby="userHelp">
+                <div id="userHelp" class="form-text">Por favor introduce tu nombre.</div>
+            </div>
+            <div class="mb-3">
+                <label for="emailInput" class="form-label">Email</label>
+                <input type="email" class="form-control" id="emailInput" required aria-describedby="emailHelp">
+                <div id="emailHelp" class="form-text">Por favor introduce tu correo electronico.</div>
+            </div>
+            <div class="mb-3">
+                <label for="passInput" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="passInput" required aria-describedby="passHelp">
+                <div id="passHelp" class="form-text">Por favor crea una contraseña.</div>
+            </div>
+            <div class="mb-3">
+                <label for="userType" class="form-label">Tipo de Usuario</label>
+                <select class="form-select" id="userType" disabled>
+                    <option value="admin_mensajeria">Administrador de mensajeria</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primaryplus mt-2">Submit</button>
+        </form>
+    </div>
 </div>
 

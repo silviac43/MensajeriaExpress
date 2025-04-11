@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <title>Document</title>
+</head>
+<body class="bg-softlight">
+    <div id="navbar">
+        <ul class="nav justify-content-center p-2 bg-softdarkblue">
+            <li class="nav-item">
+                <a href="/clients" data-link class="nav-link mx-4" active>Clientes</a>
+            </li>
+            <li class="nav-item">
+                <a href="/pedidos" data-link class="nav-link mx-4" active>Pedidos</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link mx-4" active>Log out</a>
+            </li>
+        </ul>
+    </div>
+    <div id="app" class="vh-100">
+        <div class="d-flex align-items-center justify-content-center">
+            <div class="d-flex flex-column justify-content-start m-5 bg-white border rounded p-5 pt-4 shadow text-softdark vh-75" style="min-width: 60%;">
+                <h1 class="text-center text-uppercase">pedidos</h1>
+                <hr class="my-3">
+                <div class="table-responsive mt-3">
+                    <table class="table table-striped table-bordered">
+                        <thead class="table-dark">
+                            <tr class="">
+                                <th>Cliente</th>
+                                <th>Dirección de recogida</th>
+                                <th>Dirección de entrega</th>
+                                <th>Tipo de paquete</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="">
+                                <td>Juan Pérez</td>
+                                <td>Calle 123 #45-67, Bogotá</td>
+                                <td>Avenida 8 #12-34, Medellín</td>
+                                <td>Documentos</td>
+                                <td><span class="badge bg-success">Entregado</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary action-btn" title="Editar">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-info action-btn" title="Ver más">
+                                        <i class="bi bi-eye-fill"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger action-btn" title="Eliminar">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>María Gómez</td>
+                                <td>Carrera 56 #78-90, Cali</td>
+                                <td>Calle 10 #11-22, Barranquilla</td>
+                                <td>Electrodoméstico</td>
+                                <td><span class="badge bg-warning text-dark">En tránsito</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary action-btn" title="Editar">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-info action-btn" title="Ver más">
+                                        <i class="bi bi-eye-fill"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger action-btn" title="Eliminar">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Carlos Rodríguez</td>
+                                <td>Avenida 30 #40-50, Bucaramanga</td>
+                                <td>Carrera 5 #6-7, Cartagena</td>
+                                <td>Ropa</td>
+                                <td><span class="badge bg-secondary">Pendiente</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary action-btn" title="Editar">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-info action-btn" title="Ver más">
+                                        <i class="bi bi-eye-fill"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger action-btn" title="Eliminar">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="prueba.js"></script>
+    <script src="public/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+</body>
+</html>

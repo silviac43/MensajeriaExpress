@@ -4,7 +4,9 @@
   "description": "Frontend app using vanilla JS with Bootstrap for styling.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "sass ./scss/styles.scss ./css/styles.css",
+    "watch:css": "sass --watch styles.scss styles.css"
   },
   "author": "DRey & SAcs",
   "license": "ISC",

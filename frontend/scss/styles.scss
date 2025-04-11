@@ -4,6 +4,8 @@
 // Importo las variables de Bootstrap
 @import "../node_modules/bootstrap/scss/variables";
 
+@import "../node_modules/bootstrap-icons/font/bootstrap-icons.css";
+
 // Sobrescribo las variables que quiero cambiar
 $light: $gray-200;
 
@@ -13,18 +15,41 @@ $custom-colors: (
   "softdarkblue": #1d2d44,
   "softblue": #3e5c76,
   "softgrayblue": #748cab,
-  "softlight": #f0ebd8
+  "softlight": #f0ebd8,
+  "vibrantred": #e63946
 );
 
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
 
 
-
 // Importo Bootstrap completo (ahora usará mis variables personalizadas)
 @import "../node_modules/bootstrap/scss/bootstrap";
 
+$vibrantred: map-get($theme-colors, "vibrantred");
+$softdark: map-get($theme-colors, "softdark");
 
+.table-dark {
+  --bs-table-bg: #{$softdark};
+  --bs-table-striped-bg: #{darken($softdark, 3%)};
+  --bs-table-striped-color: #fff;
+  --bs-table-active-bg: #{darken($softdark, 5%)};
+  --bs-table-active-color: #fff;
+  --bs-table-hover-bg: #{darken($softdark, 7%)};
+  --bs-table-hover-color: #fff;
+  
+  color: #fff; // Default text color
+  border-color: #{darken($softdark, 10%)};
+}
+
+.btn-danger.action-btn {
+  --bs-btn-bg: #{$vibrantred}; 
+  --bs-btn-border-color: #{darken($vibrantred, 5%)};
+  --bs-btn-hover-bg: #{darken($vibrantred, 10%)};
+  --bs-btn-hover-border-color: #{darken($vibrantred, 15%)};
+  --bs-btn-active-bg: #{darken($vibrantred, 15%)};
+  --bs-btn-active-border-color: #{darken($vibrantred, 20%)};
+}
 
 // edito el .form-control
 .form-control {
@@ -73,4 +98,30 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
     &:hover {
         color: darken(map-get($theme-colors, "softblue"), 10%);
     }
+}
+
+.action-btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0 0.25rem;
+}
+
+.nav-item {
+  .nav-link {
+    color: map-get($theme-colors, "softlight");
+    transition: all 0.2s ease;
+    border-bottom: 1px solid transparent;
+    
+    &:hover {
+      border-bottom-color: map-get($theme-colors, "softlight");
+      padding-bottom: 2px;
+    }
+  }
+}
+
+#log-out {
+  &:hover {
+    cursor: pointer;
+  }
 }
