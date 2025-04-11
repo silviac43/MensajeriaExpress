@@ -4,7 +4,9 @@ import App from './App.js'
 const config = {
   routes: {
     "/login": "login.html",
-    "/register": "register.html"
+    "/register": "register.html",
+    "/pedidos": "pedidos.html",
+    "/clientes": "clientes.html"
   }
 };
 

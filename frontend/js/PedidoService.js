@@ -16,10 +16,9 @@ export default class PedidoService {
     }
 
     convertData(data) {
-        // console.log("convert data", data);
-
         let result = data.map((el => {
             return {
+                'id': el['id'],
                 'Cliente': el['cliente']['nombre'],
                 'Dirección de recogida': el['direccionRecogida'],
                 'Dirección de entrega': el['direccionEntrega'],
@@ -28,14 +27,6 @@ export default class PedidoService {
             }
         }))
         return result;
-        
-        // return {
-        //     'Cliente': data['cliente']['nombre'],
-        //     'Dirección de recogida': data['direccionRecogida'],
-        //     'Dirección de entrega': data['direccionEntrega'],
-        //     'Tipo de paquete': data['tipoPaquete'],
-        //     'Estado': data['estado']
-        // }
     }
 
     async getPedidos() {
@@ -52,6 +43,24 @@ export default class PedidoService {
             return await response.json();
         } catch (error) {
             console.error("Error en getPedidos:", error);
+            return [];
+        }
+    }
+
+    async deletePedido(id) {
+        const token = localStorage.getItem("user");
+        try {
+            const response = await fetch(`http://localhost:8080/api/pedidos/${id}`, {
+                method: 'DELETE',
+                credentials: 'include',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            })
+            if (!response.ok) throw new Error('Error al eliminar el pedido.')
+            return response.ok;
+        } catch (error) {
+            console.error("Error en deletePedido:", error);
             return [];
         }
     }

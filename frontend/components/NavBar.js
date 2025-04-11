@@ -6,14 +6,22 @@ export default class NavBar {
     }
   
     handleClicks(router) {
+      
       // Use arrow function to auto-bind `this`
       this.element.addEventListener("click", (e) => {
         const link = e.target.closest("[data-link]");
+        // console.log(link);
+        
         if (!link) return;
-  
+        // console.log(link);
+        
         e.preventDefault();
         const path = new URL(link.href).pathname;
-        router.enhancedNavigateTo(this.routes[path], path); // Pass DOM element only
+        if (path == '/clientes' || path == '/pedidos') {
+          document.getElementById('content-section').innerHTML = ''
+          this.routes[path].updateTable();
+        }
+        router.enhancedNavigateTo(this.routes[path].getElement(), path); // 
       });
     }
   

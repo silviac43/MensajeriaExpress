@@ -4,10 +4,11 @@ import Router from "./Router.js";
 import Form from "../components/Form.js";
 import NavBar from "../components/NavBar.js";
 import Pedidos from "../components/Pedido.js";
+import Cliente from "../components/Cliente.js";
 
 export default class App {
     #router = null;
-    #pedidoService = null;
+    // #pedidoService = null;
 
     constructor(config) {
         this.config = config;
@@ -19,29 +20,26 @@ export default class App {
 
     async init() {
         // Inicializa servicios
-        this.initServices();
+        // this.initServices();
 
         // Inicializa el router del contenido
         this.#router = new Router(this.config.routes);
-
+        
         await this.initComponents();
+        
+        // console.log(this.clientesSection);
+        
         this.loginNavBar.setRoutes({
-            '/login': this.formLogin.getElement(),
-            '/register': this.formRegister.getElement()
+            '/login': this.formLogin,
+            '/register': this.formRegister
         })
         this.logedNavBar.setRoutes({
-            '/pedidos': this.pedidosSection.getElement()
+            '/pedidos': this.pedidosSection,
+            '/clientes': this.clientesSection
         })
+
         // Inicializa el estado de autenticacion
         this.initializeAuth();
-
-        // Listeners del estado
-        // document.addEventListener('authStateChanged', () => this.updateAuthState());
-        // window.addEventListener('storage', (e) => {
-        //     if (e.key === 'isAuthenticated' || e.key === 'user') {
-        //         this.updateAuthState();
-        //     }
-        // });
 
         document.addEventListener('authStateChanged', 
             () => this.handleAuthChange());
@@ -56,7 +54,17 @@ export default class App {
         this.formRegister = await this.createRegisterForm();
         this.loginNavBar = await this.createNavBar('loginNav.html');
         this.logedNavBar = await this.createLogedNavBar();
-        this.pedidosSection = await this.createPedidosSection();    
+        this.pedidosSection = await this.createPedidosSection();
+        this.clientesSection = await this.createClientesSection();
+        this.#router.onRouteChange((url) => {
+            if (this.state.isAuthenticated && this.state.user) {
+                if (url === '/clientes') {
+                    this.clientesSection.updateTable();
+                } else if (url === '/pedidos') {
+                    this.pedidosSection.updateTable();
+                }
+            }
+        });
     }
 
     async createLogedNavBar() {
@@ -67,7 +75,7 @@ export default class App {
         logOutLink.classList.add('nav-link','mx-4');
         logOutLink.onclick = this.logOut;
         logOutLink.innerText = 'Log out';
-        logOutLink.setAttribute('id','log-out')
+        logOutLink.setAttribute('id','log-out');
         logOutLink.setAttribute('active', 'true'); 
         logOutItem.appendChild(logOutLink)
         logedNav.getElement().childNodes[2].appendChild(logOutItem);
@@ -76,8 +84,8 @@ export default class App {
 
     logOut() {
         AuthService.logout();
-        
     }
+
     async initializeAuth() {
         try {
             await this.updateAuthState();
@@ -87,21 +95,14 @@ export default class App {
     }
 
     async updateAuthState() {
-        
-        
         this.state.isAuthenticated = AuthService.isAuthenticated();
         this.state.user = AuthService.getToken();
-        // if(this.state.isAuthenticated && this.state.user && window.location.pathname == '/login') {
-        //     history.replaceState(null,null,'/pedidos')
-        // }
-        console.log('updateAuthState', this.state.isAuthenticated, this.state.user);
         await this.renderComponents();
     }
 
     async renderComponents() {
         try {
             if (this.state.isAuthenticated && this.state.user) {
-                
                 this.renderNav(this.logedNavBar.getElement())
                 this.renderAuthenticatedContent()
             } else {
@@ -116,10 +117,11 @@ export default class App {
     renderAuthenticatedContent() {
         // console.log('authenticated section');
         const currentPath = window.location.pathname;
-
-        // console.log(currentPath);
+        
+        console.log(currentPath);
         if (currentPath == '/clientes'){
-            this.renderContent(this.pedidosSection.getElement(), '/clientes')
+            // this.clientesSection.updateTable();
+            this.renderContent(this.clientesSection.getElement(), '/clientes')
         } else {
             this.pedidosSection.updateTable();
             this.renderContent(this.pedidosSection.getElement(), '/pedidos')
@@ -198,9 +200,9 @@ export default class App {
         
     }
 
-    initServices() {
-        this.#pedidoService = new PedidoService();
-    }
+    // initServices() {
+    //     // this.#pedidoService = new PedidoService();
+    // }
 
     // Creo el register form
     async createRegisterForm() {
@@ -265,13 +267,21 @@ export default class App {
         return formLogin;
     }
 
-    async createPedidosSection() {        
-        let html = await this.getHtml('Pedido.html')
-        const pedidosSection = new Pedidos(html)        
+    async createPedidosSection() {
+        let html = await this.getHtml('Pedido.html');
+        const pedidosSection = new Pedidos(html);
+        // pedidosSection.addButton();
         return pedidosSection;
     }
 
+    async createClientesSection() {
+        let html = await this.getHtml('Cliente.html');
+        const clientesSection = new Cliente(html);
+        return clientesSection;
+    }
+
     async createNavBar (htmlRoute) {
+        
         let html = await this.getHtml(htmlRoute);
         const nav = new NavBar(html);
         nav.handleClicks(this.#router)
