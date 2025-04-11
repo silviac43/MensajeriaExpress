@@ -1,5 +1,7 @@
 package entornos.taller.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -10,6 +12,7 @@ public class Usuario {
     private int id;
     private String email;
     private String nombreUsuario;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String tipo;
 
